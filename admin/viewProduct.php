@@ -581,8 +581,7 @@ if (isset($_POST['submit'])) {
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">Sr No.</th>
-                    <th scope="col">Category Id</th>
-                    <th scope="col">Product Parent Id</th>
+                    <th scope="col">Product Parent Name</th>
                     <th scope="col">Category Name</th>
                     <th scope="col">Link</th>
                     <th scope="col">Status</th>
@@ -610,3 +609,337 @@ if (isset($_POST['submit'])) {
   require 'footer.php';
 ?>
 </div>
+<script>
+$('#productName').on('focusout', validateProductName);
+    // $('#pageUrl').on('focusout', validateProductName);
+    $('#monthPrice').on('blur', validateMonthPrice);
+    $('#annualPrice').on('blur', validateAnnualPrice);
+    $('#sku').on('blur', validateSku);
+    $('#webSpace').on('blur', validateWebSpace);
+    $('#bandWidth').on('blur', validateBandWidth);
+    $('#freeDomain').on('blur', validateFreeDomain);
+    $('#mailBox').on('blur', validateMailBox);
+    $('#language').on('blur', validateTechnology);
+    // $('#prodForm').on('submit', validateForm);
+
+    $('#updateProduct').attr('disabled', true);
+
+    /**
+     * Function for validateProductName
+     * 
+     * @return validateProductName()
+     */
+    function validateProductName()
+    {
+      $('#updateProduct').attr('disabled', false);
+        let value = $(this).val();
+        let pattern = /^[^0-9][a-zA-Z0-9-\s]+$/;
+
+        if (value != '') {
+                if (value[0] == ' ' || value[value.length-1] == ' ') {
+                    $(this).addClass('is-invalid');
+                    $('.invalid-feedback').html('No space allowed at start and end !');
+                    
+                    // $('#updateProduct').attr('disabled', true);
+                } else {
+                    if (!pattern.test(value)) {
+                        $(this).addClass('is-invalid');
+                        $(this).removeClass('is-valid');
+                        // $('#updateProduct').attr('disabled', true);
+                    } else {
+                        $(this).addClass('is-valid');
+                        $(this).removeClass('is-invalid');
+                        
+                            
+                        
+                    }
+                }
+        } else {
+            $(this).addClass('is-invalid');
+            $(this).removeClass('is-valid');
+            
+            $('.invalid-feedback').html('Required field !');
+            // $('#updateProduct').attr('disabled', true);
+        }
+    }
+
+
+    /**
+     * Function for validatePrice
+     * 
+     * @return validatePrice()
+     */
+    function validateMonthPrice()
+    {
+      $('#updateProduct').attr('disabled', false);
+        let value = $(this).val();
+        let pattern = /^([0-9]+(\.[0-9]+)?)$/;
+
+        if (value != '') {
+            if (value.length > 15) {
+                $(this).addClass('is-invalid');
+                $('.invalid-feedback').html('max-length 15 allowed !');
+                $(this).removeClass('is-valid');
+                
+                // $('#updateProduct').attr('disabled', true);
+            } else {
+                if (!pattern.test(value)) {
+                    $(this).addClass('is-invalid');
+                    $(this).removeClass('is-valid');
+                    
+                    // $('#updateProduct').attr('disabled', true);
+                } else {
+                    $(this).addClass('is-valid');
+                    $(this).removeClass('is-invalid');
+                    
+                }
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $('.invalid-feedback').html
+            $(this).removeClass('is-valid');('Required field !');
+            
+            // $('#updateProduct').attr('disabled', true);
+        }
+    }
+
+    function validateAnnualPrice()
+    {
+      $('#updateProduct').attr('disabled', false);
+        let value = $(this).val();
+        let pattern = /^([0-9]+(\.[0-9]+)?)$/;
+
+        if (value != '') {
+            if (value.length > 15) {
+                $(this).addClass('is-invalid');
+                $('.invalid-feedback').html('max-length 15 allowed !');
+                $(this).removeClass('is-valid');
+                
+                // $('#updateProduct').attr('disabled', true);
+            } else {
+                if (!pattern.test(value)) {
+                    $(this).addClass('is-invalid');
+                    $(this).removeClass('is-valid');
+                    
+                    // $('#updateProduct').attr('disabled', true);
+                } else {
+                    $(this).addClass('is-valid');
+                    $(this).removeClass('is-invalid');
+                    
+                }
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $('.invalid-feedback').html
+            $(this).removeClass('is-valid');('Required field !');
+            
+            // $('#updateProduct').attr('disabled', true);
+        }
+    }
+
+
+    /**proname+pageurl+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 10
+     * Function for validateSku
+     * 
+     * @return validateSku()
+     */
+    function validateSku()
+    {
+      $('#updateProduct').attr('disabled', false);
+        let value = $(this).val();
+        // let pattern = /^[^0-9#-][a-zA-Z0-9^#-]+$/;
+        let pattern = /^(([a-zA-Z0-9-#?]+)([a-zA-Z0-9]+))|(([a-zA-Z0-9-#?]+)([a-zA-Z0-9]+)([-#?]))+$/
+        if (value != '') {
+            if (!pattern.test(value)) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('is-valid');
+                
+                // $('#updateProduct').attr('disabled', true);
+            } else {
+                $(this).addClass('is-valid');
+                $(this).removeClass('is-invalid');
+                
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $('.invalid-feedback').html('Required field !');
+            $(this).removeClass('is-valid');
+            
+            // $('#updateProduct').attr('disabled', true);
+        }
+    }
+
+    /**
+     * Function for validateGB
+     * 
+     * @return validateGB()
+     */
+    function validateWebSpace()
+    {
+      $('#updateProduct').attr('disabled', false);
+        let value = $(this).val();
+        let pattern = /^([0-9]+(\.[0-9]+)?)$/;
+        if (value != '') {
+            if (value.length > 5) {
+                $(this).addClass('is-invalid');
+                $('.invalid-feedback').html('max-length 5 allowed !');
+                $(this).removeClass('is-valid');
+                
+                // $('#updateProduct').attr('disabled', true);
+            } else {
+                if (!pattern.test(value)) {
+                    $(this).addClass('is-invalid');
+                    $(this).removeClass('is-valid');
+                   
+                    // $('#updateProduct').attr('disabled', true);
+                } else {
+                    $(this).addClass('is-valid');
+                    $(this).removeClass('is-invalid');
+                    
+                }
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $(this).removeClass('is-valid');
+            $('.invalid-feedback').html('Required field !');
+           
+            // $('#updateProduct').attr('disabled', true);
+        }
+    }
+
+
+    function validateBandWidth()
+    {
+      $('#updateProduct').attr('disabled', false);
+        let value = $(this).val();
+        let pattern = /^([0-9]+(\.[0-9]+)?)$/;
+        if (value != '') {
+            if (value.length > 5) {
+                $(this).addClass('is-invalid');
+                $('.invalid-feedback').html('max-length 5 allowed !');
+                $(this).removeClass('is-valid');
+               
+                // $('#updateProduct').attr('disabled', true);
+            } else {
+                if (!pattern.test(value)) {
+                    $(this).addClass('is-invalid');
+                    $(this).removeClass('is-valid');
+                   
+                    // $('#updateProduct').attr('disabled', true);
+                } else {
+                    $(this).addClass('is-valid');
+                    $(this).removeClass('is-invalid');
+                    
+                }
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $(this).removeClass('is-valid');
+            $('.invalid-feedback').html('Required field !');
+            
+            // $('#updateProduct').attr('disabled', true);
+        }
+    }
+
+    /**
+     * Function for validateNumber
+     * 
+     * @return validateNumber()
+     */
+    function validateFreeDomain()
+    {
+      $('#updateProduct').attr('disabled', false);
+        let value = $(this).val();
+        // let pattern = /^[0-9]$/;
+        let pattern = /^([a-zA-Z]+$)|(^([0-9])+$)/;
+        if (value != '') {
+            if (!pattern.test(value)) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('is-valid');
+                
+                // $('#updateProduct').attr('disabled', true);
+            } else {
+                $(this).addClass('is-valid');
+                $(this).removeClass('is-invalid');
+                
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $('.invalid-feedback').html('Required field !');
+            $(this).removeClass('is-valid');
+            
+            // $('#updateProduct').attr('disabled', true);
+        }
+    }
+
+    function validateMailBox()
+    {
+      $('#updateProduct').attr('disabled', false);
+        let value = $(this).val();
+        // let pattern = /^[0-9]$/;
+        let pattern = /^([a-zA-Z]+$)|(^([0-9])+$)/;
+        if (value != '') {
+            if (!pattern.test(value)) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('is-valid');
+                
+                $('#updateProduct').attr('disabled', true);
+                return false;
+            } else {
+                $(this).addClass('is-valid');
+                $(this).removeClass('is-invalid');
+                $('#updateProduct').attr('disabled', false);
+                return true;
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $('.invalid-feedback').html('Required field !');
+            $(this).removeClass('is-valid');
+           
+            $('#updateProduct').attr('disabled', true);
+            return false;
+        }
+    }
+
+
+
+    /**
+     * Function for validateTechnology
+     * 
+     * @return validateTechnology()
+     */
+    function validateTechnology()
+    {
+      $('#updateProduct').attr('disabled', false);
+        let value = $(this).val();
+        let pattern = /^[a-zA-Z,\s]+$/;
+        if (value != '') {
+            if (value[0] == ' ' || value[value.length-1] == ' ') {
+                $(this).addClass('is-invalid');
+                $('.invalid-feedback').html('No space allowed at start and end !');
+                $(this).removeClass('is-valid');
+                
+                $('#updateProduct').attr('disabled', true);
+                return false;
+            } else if (!pattern.test(value)) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('is-valid');
+                $('#updateProduct').attr('disabled', true);
+                return false;
+                
+            } else {
+                $(this).addClass('is-valid');
+                $(this).removeClass('is-invalid');
+                $('#updateProduct').attr('disabled', false);
+                return true;
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $('.invalid-feedback').html('Required field !');
+            $(this).removeClass('is-valid');
+            
+            $('#updateProduct').attr('disabled', true);
+            return false;
+        }
+    }
+</script>

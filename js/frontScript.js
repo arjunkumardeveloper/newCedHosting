@@ -137,12 +137,15 @@ $(document).ready(function() {
             }, 
             success: function(msg) 
             {
+                // alert(msg);
                 if (msg == "Login") {
                     alert('Login Successfully !');
                     window.location.href = 'index.php';
                 } else if (msg == "admin") {
                     alert('Login Successfully !');
                     window.location.href = 'admin/index.php';
+                } else {
+                    alert('Bad Crediential !');
                 }
                 
             },

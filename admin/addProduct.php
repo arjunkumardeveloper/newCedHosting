@@ -443,7 +443,7 @@ if (isset($_POST['submit'])) {
                         <input type="text" id="annualPrice" class="form-control"
                          placeholder="ex: 23">
                         <div class="invalid-feedback">
-                          lease enter valid annual price !
+                          Please enter valid annual price !
                         </div>
                         <h6 class="heading-small text-muted mb-4">
                         Enter Annual Price(max-length:15), only numeric,

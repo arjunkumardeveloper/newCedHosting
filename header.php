@@ -10,6 +10,9 @@
  * @link     link
  */
 session_start();
+if (isset($_SESSION['admindata'])) {
+    header('location: admin/index.php');
+}
 require 'Product.php';
 $Product = new Product();
 
@@ -153,6 +156,10 @@ $(".swipebox").swipebox();
                             foreach ($data as $row) {
                             ?>
                                 <li>
+                                <?php
+                                    // $encode = urlencode('id='.$row['id']);
+                                    
+                                ?>
                                 <a href="catpage.php?id=<?php echo $row['id'];?>">
                                 <?php echo $row['prod_name']; ?></a></li>
                             <?php

@@ -1,4 +1,9 @@
 $(document).ready(function() {
+
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+    
     $('#tableData').DataTable( {
         "ajax": 'adminRequest.php?fetchCategory=1'
     } );
@@ -10,6 +15,11 @@ $(document).ready(function() {
     $('input, select').removeClass('is-invalid');
     
 
+
+    
+
+
+
     $('#cid').focusout(function(){
         var cid = $('#cid').val();
         if (cid == '') {
@@ -20,29 +30,29 @@ $(document).ready(function() {
         }
     });
     $('#productName').on('focusout', validateProductName);
-    $('#pageUrl').on('focusout', validateProductName);
-    $('#monthPrice').on('blur', validatePrice);
-    $('#annualPrice').on('blur', validatePrice);
+    // $('#pageUrl').on('focusout', validateProductName);
+    $('#monthPrice').on('blur', validateMonthPrice);
+    $('#annualPrice').on('blur', validateAnnualPrice);
     $('#sku').on('blur', validateSku);
-    $('#webSpace').on('blur', validateGB);
-    $('#bandWidth').on('blur', validateGB);
-    $('#freeDomain').on('blur', validateNumber);
-    $('#mailBox').on('blur', validateNumber);
+    $('#webSpace').on('blur', validateWebSpace);
+    $('#bandWidth').on('blur', validateBandWidth);
+    $('#freeDomain').on('blur', validateFreeDomain);
+    $('#mailBox').on('blur', validateMailBox);
     $('#language').on('blur', validateTechnology);
     // $('#prodForm').on('submit', validateForm);
 
-    // $('#addProduct').attr('disabled', true);
+    $('#addProduct').attr('disabled', true);
 
-    // var proname = 0;
+    var proname = 0;
     // var pageurl = 0;
-    // var month = 0;
-    // var annual = 0;
-    // var sku = 0;
-    // var webspace = 0;
-    // var bandwidth = 0;
-    // var freedomain = 0;
-    // var mailbox = 0;
-    // var language = 0;
+    var month = 0;
+    var annual = 0;
+    var sku = 0;
+    var webspace = 0;
+    var bandwidth = 0;
+    var freedomain = 0;
+    var mailbox = 0;
+    var language = 0;
 
     /**
      * Function for validateProductName
@@ -58,21 +68,31 @@ $(document).ready(function() {
                 if (value[0] == ' ' || value[value.length-1] == ' ') {
                     $(this).addClass('is-invalid');
                     $('.invalid-feedback').html('No space allowed at start and end !');
+                    proname = 0;
+                    $('#addProduct').attr('disabled', true);
                 } else {
                     if (!pattern.test(value)) {
                         $(this).addClass('is-invalid');
                         $(this).removeClass('is-valid');
-                        
+                        proname = 0;
+                        $('#addProduct').attr('disabled', true);
                     } else {
                         $(this).addClass('is-valid');
                         $(this).removeClass('is-invalid');
-                        $('#addProduct').attr('disabled', false);
+                        proname = 1;
+                        if (proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 9) {
+                            $('#addProduct').attr('disabled', false);
+                        } else {
+                            return false;
+                        }
                     }
                 }
         } else {
             $(this).addClass('is-invalid');
             $(this).removeClass('is-valid');
+            proname = 0;
             $('.invalid-feedback').html('Required field !');
+            $('#addProduct').attr('disabled', true);
         }
     }
 
@@ -82,7 +102,7 @@ $(document).ready(function() {
      * 
      * @return validatePrice()
      */
-    function validatePrice()
+    function validateMonthPrice()
     {
         let value = $(this).val();
         let pattern = /^([0-9]+(\.[0-9]+)?)$/;
@@ -92,25 +112,74 @@ $(document).ready(function() {
                 $(this).addClass('is-invalid');
                 $('.invalid-feedback').html('max-length 15 allowed !');
                 $(this).removeClass('is-valid');
+                month = 0;
+                $('#addProduct').attr('disabled', true);
             } else {
                 if (!pattern.test(value)) {
                     $(this).addClass('is-invalid');
                     $(this).removeClass('is-valid');
+                    month = 0;
+                    $('#addProduct').attr('disabled', true);
                 } else {
                     $(this).addClass('is-valid');
-                    $('#addProduct').attr('disabled', false);
                     $(this).removeClass('is-invalid');
+                    month = 1;
+                    if (proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 9) {
+                        $('#addProduct').attr('disabled', false);
+                    } else {
+                        return false;
+                    }
                 }
             }
         } else {
             $(this).addClass('is-invalid');
             $('.invalid-feedback').html
             $(this).removeClass('is-valid');('Required field !');
+            month = 0;
+            $('#addProduct').attr('disabled', true);
+        }
+    }
+
+    function validateAnnualPrice()
+    {
+        let value = $(this).val();
+        let pattern = /^([0-9]+(\.[0-9]+)?)$/;
+
+        if (value != '') {
+            if (value.length > 15) {
+                $(this).addClass('is-invalid');
+                $('.invalid-feedback').html('max-length 15 allowed !');
+                $(this).removeClass('is-valid');
+                annual = 0;
+                $('#addProduct').attr('disabled', true);
+            } else {
+                if (!pattern.test(value)) {
+                    $(this).addClass('is-invalid');
+                    $(this).removeClass('is-valid');
+                    annual = 0;
+                    $('#addProduct').attr('disabled', true);
+                } else {
+                    $(this).addClass('is-valid');
+                    $(this).removeClass('is-invalid');
+                    annual = 1;
+                    if (proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 9) {
+                        $('#addProduct').attr('disabled', false);
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $('.invalid-feedback').html
+            $(this).removeClass('is-valid');('Required field !');
+            annual = 0;
+            $('#addProduct').attr('disabled', true);
         }
     }
 
 
-    /**
+    /**proname+pageurl+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 10
      * Function for validateSku
      * 
      * @return validateSku()
@@ -118,20 +187,30 @@ $(document).ready(function() {
     function validateSku()
     {
         let value = $(this).val();
-        let pattern = /^[^0-9#-][a-zA-Z0-9#-]+$/;
+        // let pattern = /^[^0-9#-][a-zA-Z0-9^#-]+$/;
+        let pattern = /^(([a-zA-Z0-9-#?]+)([a-zA-Z0-9]+))|(([a-zA-Z0-9-#?]+)([a-zA-Z0-9]+)([-#?]))+$/
         if (value != '') {
             if (!pattern.test(value)) {
                 $(this).addClass('is-invalid');
                 $(this).removeClass('is-valid');
+                sku = 0;
+                $('#addProduct').attr('disabled', true);
             } else {
                 $(this).addClass('is-valid');
-                $('#addProduct').attr('disabled', false);
                 $(this).removeClass('is-invalid');
+                sku = 1;
+                if (proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 9) {
+                    $('#addProduct').attr('disabled', false);
+                } else {
+                    return false;
+                }
             }
         } else {
             $(this).addClass('is-invalid');
             $('.invalid-feedback').html('Required field !');
             $(this).removeClass('is-valid');
+            sku = 0;
+            $('#addProduct').attr('disabled', true);
         }
     }
 
@@ -140,7 +219,7 @@ $(document).ready(function() {
      * 
      * @return validateGB()
      */
-    function validateGB()
+    function validateWebSpace()
     {
         let value = $(this).val();
         let pattern = /^([0-9]+(\.[0-9]+)?)$/;
@@ -149,20 +228,69 @@ $(document).ready(function() {
                 $(this).addClass('is-invalid');
                 $('.invalid-feedback').html('max-length 5 allowed !');
                 $(this).removeClass('is-valid');
+                webspace = 0;
+                $('#addProduct').attr('disabled', true);
             } else {
                 if (!pattern.test(value)) {
                     $(this).addClass('is-invalid');
                     $(this).removeClass('is-valid');
+                    webspace = 0;
+                    $('#addProduct').attr('disabled', true);
                 } else {
                     $(this).addClass('is-valid');
-                    $('#addProduct').attr('disabled', false);
                     $(this).removeClass('is-invalid');
+                    webspace = 1;
+                    if (proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 9) {
+                        $('#addProduct').attr('disabled', false);
+                    } else {
+                        return false;
+                    }
                 }
             }
         } else {
             $(this).addClass('is-invalid');
             $(this).removeClass('is-valid');
             $('.invalid-feedback').html('Required field !');
+            webspace = 0;
+            $('#addProduct').attr('disabled', true);
+        }
+    }
+
+
+    function validateBandWidth()
+    {
+        let value = $(this).val();
+        let pattern = /^([0-9]+(\.[0-9]+)?)$/;
+        if (value != '') {
+            if (value.length > 5) {
+                $(this).addClass('is-invalid');
+                $('.invalid-feedback').html('max-length 5 allowed !');
+                $(this).removeClass('is-valid');
+                bandwidth = 0;
+                $('#addProduct').attr('disabled', true);
+            } else {
+                if (!pattern.test(value)) {
+                    $(this).addClass('is-invalid');
+                    $(this).removeClass('is-valid');
+                    bandwidth = 0;
+                    $('#addProduct').attr('disabled', true);
+                } else {
+                    $(this).addClass('is-valid');
+                    $(this).removeClass('is-invalid');
+                    bandwidth = 1;
+                    if (proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 9) {
+                        $('#addProduct').attr('disabled', false);
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $(this).removeClass('is-valid');
+            $('.invalid-feedback').html('Required field !');
+            bandwidth = 0;
+            $('#addProduct').attr('disabled', true);
         }
     }
 
@@ -171,23 +299,65 @@ $(document).ready(function() {
      * 
      * @return validateNumber()
      */
-    function validateNumber()
+    function validateFreeDomain()
     {
         let value = $(this).val();
-        let pattern = /^[0-9]$/;
+        // let pattern = /^[0-9]$/;
+        let pattern = /^([a-zA-Z]+$)|(^([0-9])+$)/;
         if (value != '') {
             if (!pattern.test(value)) {
                 $(this).addClass('is-invalid');
                 $(this).removeClass('is-valid');
+                freedomain = 0;
+                $('#addProduct').attr('disabled', true);
             } else {
                 $(this).addClass('is-valid');
                 $(this).removeClass('is-invalid');
-                $('#addProduct').attr('disabled', false);
+                freedomain = 1;
+                console.log(proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language);
+                if (proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 9) {
+                    $('#addProduct').attr('disabled', false);
+                } else {
+                    return false;
+                }
             }
         } else {
             $(this).addClass('is-invalid');
             $('.invalid-feedback').html('Required field !');
             $(this).removeClass('is-valid');
+            freedomain = 0;
+            $('#addProduct').attr('disabled', true);
+        }
+    }
+
+    function validateMailBox()
+    {
+        let value = $(this).val();
+        // let pattern = /^[0-9]$/;
+        let pattern = /^([a-zA-Z]+$)|(^([0-9])+$)/;
+        if (value != '') {
+            if (!pattern.test(value)) {
+                $(this).addClass('is-invalid');
+                $(this).removeClass('is-valid');
+                mailbox = 0;
+                $('#addProduct').attr('disabled', true);
+            } else {
+                $(this).addClass('is-valid');
+                $(this).removeClass('is-invalid');
+                mailbox = 1;
+                console.log(proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language);
+                if (proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 9) {
+                    $('#addProduct').attr('disabled', false);
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            $(this).addClass('is-invalid');
+            $('.invalid-feedback').html('Required field !');
+            $(this).removeClass('is-valid');
+            mailbox = 0;
+            $('#addProduct').attr('disabled', true);
         }
     }
 
@@ -201,24 +371,36 @@ $(document).ready(function() {
     function validateTechnology()
     {
         let value = $(this).val();
-        let pattern = /^[a-zA-Z0-9,\s]+$/;
+        let pattern = /^[a-zA-Z,\s]+$/;
         if (value != '') {
             if (value[0] == ' ' || value[value.length-1] == ' ') {
                 $(this).addClass('is-invalid');
                 $('.invalid-feedback').html('No space allowed at start and end !');
                 $(this).removeClass('is-valid');
+                language = 0;
+                $('#addProduct').attr('disabled', true);
             } else if (!pattern.test(value)) {
                 $(this).addClass('is-invalid');
                 $(this).removeClass('is-valid');
+                $('#addProduct').attr('disabled', true);
+                language = 0;
             } else {
                 $(this).addClass('is-valid');
-                $('#addProduct').attr('disabled', false);
                 $(this).removeClass('is-invalid');
+                language = 1;
+                if (proname+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 9) {
+                    // alert('hi');
+                    $('#addProduct').attr('disabled', false);
+                } else {
+                    return false;
+                }
             }
         } else {
             $(this).addClass('is-invalid');
             $('.invalid-feedback').html('Required field !');
             $(this).removeClass('is-valid');
+            language = 0;
+            $('#addProduct').attr('disabled', true);
         }
     }
 
@@ -241,20 +423,20 @@ $(document).ready(function() {
     $('#addProduct').click(function(e){
         event.preventDefault();
         // alert('success');
-        let flag = 0;
-        let fields = $('input, select');
-        $.each(fields, function(index, item){
-            if ($(item).val() == '') {
-                $(this).addClass('is-invalid');
-                flag = 0;
-            } else {
-                if ($(item).hasClass('is-invalid')) {
-                   flag = 1;
-                } else {
-                   flag = 0;
-                }
-            }
-        });
+        // let flag = 0;
+        // let fields = $('input, select');
+        // $.each(fields, function(index, item){
+        //     if ($(item).val() == '') {
+        //         $(this).addClass('is-invalid');
+        //         flag = 0;
+        //     } else {
+        //         if ($(item).hasClass('is-invalid')) {
+        //            flag = 1;
+        //         } else {
+        //            flag = 0;
+        //         }
+        //     }
+        // });
         
         var cid = ($('#cid').val()).trim();
         var productName = ($('#productName').val()).trim();
@@ -275,7 +457,7 @@ $(document).ready(function() {
         //     return false;
         // } else {
         // } 
-        if(flag == 1) {
+        // if(flag == 1) {
             $.ajax({
                 url : 'adminRequest.php',
                 type : 'POST',
@@ -298,7 +480,7 @@ $(document).ready(function() {
                     alert(msg);
                 }
             });
-        }
+        // }
     });
 
    

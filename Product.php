@@ -114,7 +114,13 @@ class Product
             } else {
                 $available = "Unavailable";
             }
-            $row['data'][] = array($i++, $data['prod_parent_id'], $data['prod_name'], $data['html'], $available, $data['prod_launch_date'], "<button type='button' class='btn btn btn-outline-danger' data-id='".$data['id']."' id='deleteButton'>Delete</button><button type='button' class='btn btn btn-outline-success actioncategory' data-toggle='modal' data-target='#modal-form' data-action='edit' data-id='".$data['id']."' id='editButton'>Edit</button>" );
+
+            $pid = $data['prod_parent_id'];
+            $sql = "SELECT * FROM `tbl_product` WHERE `id` = '$pid'";
+            $res = $this->conn->query($sql);
+            $pname = $res->fetch_assoc();
+
+            $row['data'][] = array($i++, $pname['prod_name'], $data['prod_name'], $data['html'], $available, $data['prod_launch_date'], "<button type='button' class='btn btn btn-outline-danger' data-id='".$data['id']."' id='deleteButton'>Delete</button><button type='button' class='btn btn btn-outline-success actioncategory' data-toggle='modal' data-target='#modal-form' data-action='edit' data-id='".$data['id']."' id='editButton'>Edit</button>" );
         }
         echo json_encode($row);
     }
@@ -197,8 +203,13 @@ class Product
             $freeDomain = $descDescript->{'freeDomain'};
             $language = $descDescript->{'language'};
             $mailBox = $descDescript->{'mailBox'};
-            // $paranetname = $this->parentName($data['prod_parent_id']);
-            $row['data'][] = array($i++, $data['prod_id'], $data['prod_parent_id'], $data['prod_name'], $data['html'], $available, $data['prod_launch_date'],$webSpace, $bandWidth, $freeDomain, $language, $mailBox, $data['mon_price'], $data['annual_price'], $data['sku'], "<button type='button' class='btn btn btn-outline-danger' data-id='".$data['prod_id']."' id='deleteProduct'>Delete</button><button type='button' class='btn btn btn-outline-success' data-toggle='modal' data-target='#modal-form' data-id='".$data['prod_id']."' id='editProduct'>Edit</button>");
+
+            $pid = $data['prod_parent_id'];
+            $sql = "SELECT * FROM `tbl_product` WHERE `id` = '$pid'";
+            $res = $this->conn->query($sql);
+            $pname = $res->fetch_assoc();
+
+            $row['data'][] = array($i++, $pname['prod_name'], $data['prod_name'], $data['html'], $available, $data['prod_launch_date'],$webSpace, $bandWidth, $freeDomain, $language, $mailBox, $data['mon_price'], $data['annual_price'], $data['sku'], "<button type='button' class='btn btn btn-outline-danger' data-id='".$data['prod_id']."' id='deleteProduct'>Delete</button><button type='button' class='btn btn btn-outline-success' data-toggle='modal' data-target='#modal-form' data-id='".$data['prod_id']."' id='editProduct'>Edit</button>");
         }
         echo json_encode($row);
     }
@@ -365,12 +376,45 @@ class Product
             if ($this->conn->query($sql) === true) {
                 $msg = "Record updated successfully";
             } else {
-                $msg = "Error updating record: " . $conn->error;
+                $msg = "Error updating record: " . $this->conn->error;
             }
         } else {
-            $msg = "Error updating record: " . $conn->error;
+            $msg = "Error updating record: " . $this->conn->error;
         }
         return $msg;
+    }
+
+    /**
+     * Function for fetch catepage banner data
+     * 
+     * @param id $id comment
+     * 
+     * @return fetchCatPageBanner()
+     */
+    function fetchCatPageBanner($id)
+    {
+        $sql = "SELECT * FROM `tbl_product` WHERE `id` = '$id' ";
+        $result = $this->conn->query($sql);
+        $data = $result->fetch_assoc();
+        return $data;
+    }
+
+    /**
+     * Function for fetch category description 
+     * 
+     * @param id $id comment
+     * 
+     * @return fetchCatDesc()
+     */
+    function fetchCatDesc($id)
+    {
+        $arr = array();
+        $sql = "SELECT `tbl_product`.*,`tbl_product_description`.* FROM tbl_product JOIN tbl_product_description ON `tbl_product`.`id` = `tbl_product_description`.`prod_id` WHERE `tbl_product`.`prod_parent_id` = '$id' ";
+        $result = $this->conn->query($sql);
+        while ($data = $result->fetch_assoc()) {
+            $arr[] = $data;
+        }
+        return $arr;
     }
 }
 ?>

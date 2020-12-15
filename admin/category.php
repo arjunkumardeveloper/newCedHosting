@@ -375,8 +375,9 @@ if (isset($_POST['submit'])) {
                       <span class="input-group-text"><i class="ni ni-bullet-list-67 
                       text-default"></i></i></span>
                     </div>
-                    <input class="form-control" name="cname" 
-                    placeholder="Category Name" type="text" required>
+                    <input class="form-control" name="cname" id="cname"
+                    placeholder="Category Name" type="text">
+                    <div class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -386,21 +387,52 @@ if (isset($_POST['submit'])) {
                       text-default"></i></span>
                     </div>
                     <input class="form-control" name="link" 
-                    placeholder="Link" type="text" required>
+                    placeholder="Link" type="text">
                   </div>
                 </div>
                 <div class="text-center">
                   <input type="submit" value="Create Category" 
-                  class="btn btn-primary" name="submit">
+                  class="btn btn-primary" name="submit" 
+                  onclick="return validateCategory()">
                 </div>
               </form>
             </div>
           </div>
-            
+          
           </div>
         </div>    
       </div>
+      <script>
+        function validateCategory()
+        {
+          var cname = $('#cname').val();
+          let pattern = /^[a-zA-Z0-9.\s]+$/
+          if (cname != "") {
+            if (cname[0] == ' ' || cname[cname.length-1] == ' ') {
+                $('#cname').addClass('is-invalid');
+                $('.invalid-feedback').html('No space allowed at start and end !');
+                $('#cname').removeClass('is-valid');
+                return false;
+            } else if (!pattern.test(cname)) {
+                $('#cname').addClass('is-invalid');
+                $('#cname').removeClass('is-valid');
+                $('.invalid-feedback').html('Enter valid category name !');
+                return false;
+            } else {
+                $('#cname').addClass('is-valid');
+                $('#cname').removeClass('is-invalid');
+                $('.invalid-feedback').html('');
+                return true;
+            }
+          } else {
+            $('#cname').addClass('is-invalid');
+            $('#cname').removeClass('is-valid');
+            $('.invalid-feedback').html('Required field !');
+            return false;
+          } 
 
+        }
+      </script>
       <div class="col-md-4">
         <div class="modal fade" id="modal-form" tabindex="-1" role="dialog"
          aria-labelledby="modal-form" aria-hidden="true">
@@ -477,8 +509,8 @@ if (isset($_POST['submit'])) {
               table-flush cattable">
                 <thead class="thead-light">
                   <tr>
-                    <th scope="col">Category Id</th>
-                    <th scope="col">Parent Id</th>
+                    <th scope="col">Sr.No.</th>
+                    <th scope="col">Parent Name</th>
                     <th scope="col">Category Name</th>
                     <th scope="col">Link</th>
                     <th scope="col">Status</th>
