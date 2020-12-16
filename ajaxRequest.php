@@ -68,6 +68,19 @@ if (isset($_POST['action']) && $_POST['action'] == 'verifyEmailOtp') {
     }
 }
 
+if (isset($_POST['action']) && $_POST['action'] == 'verifyMobileOtp') {
+    $motp = $_POST['motp'];
+    $smotp = $_SESSION['motp'];
+    $cust_mobile = $_POST['cust_mobile'];
+
+    if ($motp == $smotp) {
+        $msg = $User->approveMobile($cust_mobile);
+        echo $msg;
+    } else {
+        echo "Please enter valid otp !";
+    }
+}
+
 
 ?>
 <?php 

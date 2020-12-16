@@ -12,9 +12,8 @@ $(document).ready(function() {
         var letter = /^([a-zA-Z]+\s?)*$/;
 
         var pattern = /^(0)?[4-9]{1}[0-9]{9}$/;
-        // var pattemail = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-        var pattemail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,4}$/;
-        var pattpass = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*?[#?!@$%^&*-])\S{8,16}$/;
+        var pattemail = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
+        var pattpass = /^(?!.* )(?=.*\d)(?=.*[a-zA-Z]).{8,16}$/;
         // var pattanswer = /^(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
 
         var sname = $('#name').val();
@@ -87,13 +86,11 @@ $(document).ready(function() {
         } else if (!(email.match(pattemail))) {
             alert('Please enter valid email address Like: email@gmail.com !');
             return false;
-        }
-        // } else if (!(sanswer.match(pattanswer))) {
-        //     alert('Invalid Answer !');
-        //     $('#sanswer').focus();
-        //     return false;
-        // } 
-        else {
+        } else if (!isNaN(sanswer)){ 
+            alert("Security answer should not contain only numeric value !");
+            $('#sanswer').focus();
+            return false;
+        } else {
             // alert(sanswer);
             $.ajax({
                 url: 'ajaxRequest.php',
@@ -183,6 +180,41 @@ $(document).ready(function() {
                     if (msg == true) {
                         $('#loginbtn').show();
                         $('#successMsg').html('Your Email has been verified !');
+                    } else {
+                        alert(msg);
+                    }
+                }
+            });
+        }
+    });
+
+
+    $('#verifyMobile').click(function(){
+        event.preventDefault();
+        var cust_mobile = $('#cust_mobile').val();
+        // alert(cust_email);
+        var motp = $('#mobileOtp').val();
+        if (motp == "") {
+            alert("Otp is required field !");
+            $('#mobileOtp').focus();
+            return false;
+        } else {
+
+            // alert(eotp);
+            $.ajax({
+                url : 'ajaxRequest.php',
+                type : 'POST',
+                data : {
+                    motp : motp,
+                    cust_mobile : cust_mobile,
+                    action : 'verifyMobileOtp',
+                },
+                success: function(msg)
+                {
+                    // alert(msg);
+                    if (msg == true) {
+                        $('#loginbtn').show();
+                        $('#successMsg').html('Your Mobile has been verified !');
                     } else {
                         alert(msg);
                     }

@@ -114,10 +114,26 @@ class User
         $sql = "UPDATE `tbl_user` SET `email_approved` = 1, `active` = 1 WHERE 
         `email` = '$cust_email' ";
         if ($this->conn->query($sql) === true) {
-            // echo "Record updated successfully";
             return true;
         } else {
-            // echo "Error updating record: " . $conn->error;
+            return false;
+        }
+    }
+
+    /**
+     * Approve Email
+     * 
+     * @param cust_mobile $cust_mobile comment
+     * 
+     * @return approveMobile()
+     */
+    function approveMobile($cust_mobile) 
+    {
+        $sql = "UPDATE `tbl_user` SET `phone_approved` = 1, `active` = 1 WHERE 
+        `mobile` = '$cust_mobile' ";
+        if ($this->conn->query($sql) === true) {
+            return true;
+        } else {
             return false;
         }
     }

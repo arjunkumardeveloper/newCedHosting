@@ -383,11 +383,14 @@ if (isset($_POST['submit'])) {
                 <div class="form-group">
                   <div class="input-group input-group-merge input-group-alternative">
                     <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="ni ni-bullet-list-67 
-                      text-default"></i></span>
+                      <span class="input-group-text">
+                      HTML
+                      <!-- <i class="ni ni-bullet-list-67 
+                      text-default"></i> -->
+                      </span>
                     </div>
-                    <input class="form-control" name="link" 
-                    placeholder="Link" type="text">
+                    <textarea class="form-control" name="link" 
+                     type="text"></textarea>
                   </div>
                 </div>
                 <div class="text-center">
@@ -436,7 +439,7 @@ if (isset($_POST['submit'])) {
       <div class="col-md-4">
         <div class="modal fade" id="modal-form" tabindex="-1" role="dialog"
          aria-labelledby="modal-form" aria-hidden="true">
-          <div class="modal-dialog modal- modal-dialog-centered modal-sm" 
+          <div class="modal-dialog modal- modal-dialog-centered modal-md" 
           role="document">
             <div class="modal-content">
               <div class="modal-body p-0">
@@ -478,10 +481,24 @@ if (isset($_POST['submit'])) {
                   <div class="input-group input-group-merge input-group-alternative">
                     <div class="input-group-prepend">
                       <span class="input-group-text">
-                      <i class="ni ni-bullet-list-67 text-default"></i></span>
+                      <i class="ni ni-bullet-list-67 text-default"></i></i></span>
                     </div>
-                    <input class="form-control" name="link" id="ulink" 
-                    placeholder="Link" type="text">
+                    <select name="avai" id="avai" class="form-control">
+                      <option value="1">Available</option>
+                      <option value="0">Unavailable</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group input-group-merge input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                      <!-- <i class="ni ni-bullet-list-67 text-default"></i> -->
+                      HTML
+                      </span>
+                    </div>
+                    <textarea class="form-control" name="link2" id="ulink" 
+                     type="text"></textarea>
                   </div>
                 </div>
                 <div class="text-center">

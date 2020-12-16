@@ -371,7 +371,7 @@ $(document).ready(function() {
     function validateTechnology()
     {
         let value = $(this).val();
-        let pattern = /^[a-zA-Z,\s]+$/;
+        let pattern = /^[a-zA-Z0-9,\s]+$/;
         if (value != '') {
             if (value[0] == ' ' || value[value.length-1] == ' ') {
                 $(this).addClass('is-invalid');
@@ -383,6 +383,11 @@ $(document).ready(function() {
                 $(this).addClass('is-invalid');
                 $(this).removeClass('is-valid');
                 $('#addProduct').attr('disabled', true);
+                language = 0;
+            } else if (value[value.length-1] == ",") {
+                $(this).addClass('is-invalid');
+                $('.invalid-feedback').html('Comma(,) not allowed at end !');
+                $(this).removeClass('is-valid');
                 language = 0;
             } else {
                 $(this).addClass('is-valid');
@@ -510,21 +515,24 @@ $(document).ready(function() {
                 // console.log(msg);
                 // console.log(msg.prod_name);
                 $('#ucname').val(msg.prod_name);
-                $('#ulink').val(msg.html);
+                // $('#ulink').val(msg.html);
+                CKEDITOR.instances['ulink'].setData(msg.html);
                 $('#uid').val(msg.id);
+                $('#avai').val(msg.prod_available);
             }
         });
 
     });
-
     $('#updateCategory').click(function(){
         // alert('hii');
         event.preventDefault();
         var cname = $('#ucname').val();
-        var link = $('#ulink').val();
+        // var link = $('#ulink').text();
+        var link = CKEDITOR.instances['ulink'].getData();
         var id = $('#uid').val();
+        var avai = $('#avai').val();
 
-        // console.log(cname, link);
+        // console.log(avai);
         $.ajax({
             url : 'adminRequest.php',
             type : 'POST',
@@ -532,6 +540,7 @@ $(document).ready(function() {
                 cname : cname,
                 link : link,
                 id : id,
+                avai : avai,
                 action: 'updateCategory'
             },
             success : function(msg)

@@ -209,7 +209,7 @@ class Product
             $res = $this->conn->query($sql);
             $pname = $res->fetch_assoc();
 
-            $row['data'][] = array($i++, $pname['prod_name'], $data['prod_name'], $data['html'], $available, $data['prod_launch_date'],$webSpace, $bandWidth, $freeDomain, $language, $mailBox, $data['mon_price'], $data['annual_price'], $data['sku'], "<button type='button' class='btn btn btn-outline-danger' data-id='".$data['prod_id']."' id='deleteProduct'>Delete</button><button type='button' class='btn btn btn-outline-success' data-toggle='modal' data-target='#modal-form' data-id='".$data['prod_id']."' id='editProduct'>Edit</button>");
+            $row['data'][] = array($i++, $pname['prod_name'], $data['prod_name'], $data['html'], $available, $data['prod_launch_date'],$webSpace, $bandWidth, $freeDomain, $language, $mailBox, $data['mon_price'], $data['annual_price'], $data['sku'], "<button type='button' class='btn btn btn-danger' data-id='".$data['prod_id']."' id='deleteProduct'>Delete</button><button type='button' class='btn btn btn-success' data-toggle='modal' data-target='#modal-form' data-id='".$data['prod_id']."' id='editProduct'>Edit</button>");
         }
         echo json_encode($row);
     }
@@ -249,13 +249,13 @@ class Product
      * 
      * @param cname $cname comment
      * @param link  $link  comment
+     * @param id    $id    comment
      * 
      * @return updateCategory()
      */
-    function updateCategory($cname, $link, $id)
+    function updateCategory($cname, $link, $avai, $id)
     {
-        $sql = "UPDATE `tbl_product` SET `prod_name` = '$cname', `html` = '$link' 
-        WHERE `id` = '$id' ";
+        $sql = "UPDATE `tbl_product` SET `prod_name` = '$cname', `html` = '$link', `prod_available` = '$avai' WHERE `id` = '$id' ";
 
         if ($this->conn->query($sql) === true) {
             $msg = "Record updated successfully";

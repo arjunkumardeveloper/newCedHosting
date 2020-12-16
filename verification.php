@@ -19,8 +19,12 @@ if (isset($_GET['email'])) {
     $email = $_GET['email'];
     $mobile = $_GET['mobile'];
     $name = $_GET['name'];
+} else {
+    // header('Location: registration.php');
+    echo "<script>window.location.href = 'account.php'</script>";
 }
 $msg = '';
+$mobilemsg = '';
 if (isset($_POST['sendEmail'])) {
     $eotp = rand(1000, 9999);
     $_SESSION['eotp']=$eotp;
@@ -49,7 +53,7 @@ if (isset($_POST['sendEmail'])) {
         echo "Mailer Error: " . $mail->ErrorInfo;
     }
 }
-// echo $_SESSION['eotp'];
+echo $_SESSION['motp'];
 
 if (isset($_POST['sendOtp'])) {
     $motp = rand(1000, 9999);
@@ -105,7 +109,8 @@ if (isset($_POST['sendOtp'])) {
                 <div class="main-1">
                     <div class="container">
                         <p id="successMsg"></p>
-                        <a href="login.php" class="btn btn-success m-auto" id="loginbtn">
+                        <a href="login.php" class="btn btn-success m-auto" 
+                        id="loginbtn">
                         Go Login</a>
                         <div class="login-page">
                             <div class="account_grid">
@@ -123,8 +128,17 @@ if (isset($_POST['sendOtp'])) {
                                         ?>
                                         " disabled> 
                                       </div>
+                                        <?php
+                                        if (isset($_POST['sendEmail'])) {
+                                        ?>
+                                          <input type="submit" name ="sendEmail" 
+                                      value="Re-send Email OTP">
+                                        <?php
+                                        } else {
+                                        ?>
                                       <input type="submit" name ="sendEmail" 
                                       value="Verify through Email">
+                                        <?php }?>
                                       <p class="successMsg"><?php echo $msg; ?></p>
                                     </form>
                                     <form action="" method="post">
@@ -133,6 +147,7 @@ if (isset($_POST['sendOtp'])) {
                                         <input type="text" name="email" 
                                         id="emailOtp"> 
                                       </div>
+
                                       <input type="submit" name="submitEmail" 
                                       value="Validate OTP" id="verifyEmail">
                                     </form>
@@ -144,21 +159,34 @@ if (isset($_POST['sendOtp'])) {
                                     <p>You can verify yourself through mobile</p>
                                     <form action="" method="post">
                                       <div>
-                                        <!-- <span>Mobile<label>*</label></span> -->
-                                        <!-- <input type="text" name="otp"
-                                        value="" disabled>   -->
-                                        <!-- <p></p> -->
-                                      </div>                                
+                                        <span>Mobile<label>*</label></span>
+                                        <input type="text" name="otp"
+                                        value="<?php echo $mobile; ?>"
+                                        id="cust_mobile" disabled>  
+                                      </div>
+                                        <?php
+                                        if (isset($_POST['sendOtp'])) {
+                                        ?>
+                                          <input type="submit" name ="sendOtp" 
+                                      value="Re-send Mobile OTP">
+                                        <?php
+                                        } else {
+                                        ?>                            
                                       <input type="submit" name ="sendOtp" 
                                       value="Verify through mobile">
+                                        <?php
+                                        }
+                                        ?>
+                                        <p class="successMsg"><?php echo $mobilemsg; ?></p>
                                     </form>
                                     <form action="" method="post">
                                       <div>
                                         <span>Mobile<label>*</label></span>
-                                        <input type="text" name="otp" > 
+                                        <input type="text" name="otp" 
+                                        id="mobileOtp" > 
                                       </div>                                
                                       <input type="submit" name ="submitOtp" 
-                                      value="Validate OTP">
+                                      value="Validate OTP" id="verifyMobile">
                                     </form>
                                 </div>  
                                 <div class="clearfix"> </div>

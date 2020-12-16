@@ -623,7 +623,21 @@ $('#productName').on('focusout', validateProductName);
     // $('#prodForm').on('submit', validateForm);
 
     $('#updateProduct').attr('disabled', true);
+     
+    
+    $('#cid').focusout(function(){
+        var cid = $('#cid').val();
+        $('#updateProduct').attr('disabled', false);
+        if (cid == '') {
+            $('#cid').addClass('is-invalid');
+            $('#cid').removeClass('is-valid');
+        } else {
+            $('#cid').addClass('is-valid');
+            $('#cid').removeClass('is-invalid');
+        }
+    });
 
+    
     /**
      * Function for validateProductName
      * 
@@ -738,7 +752,8 @@ $('#productName').on('focusout', validateProductName);
     }
 
 
-    /**proname+pageurl+month+annual+sku+webspace+bandwidth+freedomain+mailbox+language >= 10
+    /**proname+pageurl+month+annual+sku+webspace+bandwidth+
+     * freedomain+mailbox+language >= 10
      * Function for validateSku
      * 
      * @return validateSku()
@@ -747,8 +762,7 @@ $('#productName').on('focusout', validateProductName);
     {
       $('#updateProduct').attr('disabled', false);
         let value = $(this).val();
-        // let pattern = /^[^0-9#-][a-zA-Z0-9^#-]+$/;
-        let pattern = /^(([a-zA-Z0-9-#?]+)([a-zA-Z0-9]+))|(([a-zA-Z0-9-#?]+)([a-zA-Z0-9]+)([-#?]))+$/
+        let pattern = /^[^0-9#-][a-zA-Z0-9^#-]+$/;
         if (value != '') {
             if (!pattern.test(value)) {
                 $(this).addClass('is-invalid');

@@ -52,9 +52,10 @@ if (isset($_POST['action']) && $_POST['action'] == 'editCategory') {
 if (isset($_POST['action']) && $_POST['action'] == 'updateCategory') {
     $cname = $_POST['cname'];
     $link = $_POST['link'];
+    $avai = $_POST['avai'];
     $id = $_POST['id'];
 
-    $msg = $Product->updateCategory($cname, $link, $id);
+    $msg = $Product->updateCategory($cname, $link, $avai, $id);
     echo $msg;
 }
 
